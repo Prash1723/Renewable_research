@@ -12,6 +12,10 @@ The map explores the total capacity and generation of renewable energy by each c
 
 # Research
 
+**Brazil** -
+
+Brazil's renewable energy generation story is characterized by a diverse mix of sources, with a historical emphasis on hydropower. The country has large-scale hydropower projects like the Itaipu Dam, a global leader in bioethanol production, a growing wind energy sector along its coastline, and an expanding solar power industry. Government policies, incentives, and auctions have stimulated renewable energy development, aligning with Brazil's goals of energy independence and security. Challenges include environmental considerations and the need for sustainable practices. Brazil's commitment to sustainability and ongoing efforts in research and development position it as a significant player in the global shift toward cleaner and more resilient energy systems.
+
 **Ethiopia** - 
 
 The Government of Ethiopia (GOE) has focused on the construction and expansion of power generating projects to deliver reliable electricity. Approximately 90% of the installed generation capacity is from hydropower while the remaining 8% and 2% is from wind and thermal sources, respectively.
