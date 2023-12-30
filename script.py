@@ -198,9 +198,6 @@ geo_df = gdf.merge(gen_df, left_on='country', right_on='country', how='left')
 geo_df.country = geo_df.country.apply(lambda x: x.capitalize())
 
 # Fill Null values
-na_country = list(geo_df[geo_df['2018'].isna()].country)
-false_na_country = list(set(en_df.country).difference(na_country))
-
 geo_df.fillna(0, inplace=True)
 
 # Melt the year column
