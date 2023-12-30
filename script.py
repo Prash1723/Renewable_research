@@ -7,7 +7,7 @@ from bokeh.plotting import figure, output_file, show, curdoc
 from bokeh.models import ColumnDataSource, Legend, GeoJSONDataSource, LinearColorMapper, ColorBar, Range1d
 from bokeh.models import NumeralTickFormatter, HoverTool, LabelSet, Panel, Tabs, Slider, CustomJS, TapTool, CDSView
 from bokeh.models.widgets import TableColumn, DataTable, NumberFormatter, Dropdown, Select, RadioButtonGroup, TableColumn
-from bokeh.palettes import Category20c, Spectral, GnBu, brewer, PRGn, RdYlGn
+from bokeh.palettes import Category20c
 from bokeh.io import curdoc, output_notebook, show, output_file
 from bokeh.layouts import row, column, gridplot
 from bokeh.palettes import Viridis6 as palette
@@ -230,6 +230,3 @@ curdoc().add_root(row(year_slider, map_all))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
-#rc.log(en_df['technology'].unique())
-#rc.log(na_country)
-#rc.log(false_na_country)
