@@ -208,6 +208,22 @@ geo_df1.columns = ['country', 'country_code', 'geometry', 'technology', 'unit', 
 
 geo_df1.percentage = round(geo_df1['percentage'], 2)
 
+# Bar chart data
+continents = ["Asia", "Africa", "Europe", "North america", "South america", "Central america", "Antarctica", "Australia", "Oceania"]
+
+bar_sc = ColumnDataSource(geo_df1[geo_df1['country'].isin(continents)])
+
+cont_bar = figure(plot_width=379, plot_height=500, title="Renewable energy by Continents",
+        y_range=bar_sc.data['country'], y_axis_label='Continents', x_axis_location=None,
+        tooltips=[
+            ('Continent', "@country"),
+            ('Energy', "@percentage")
+            ])
+
+cont_bar.xgrid.grid_line_color = None
+
+cont_bar.hbar(y="country", left="percentage", source=bar_sc.data, right=0, height=0.5, fill_color="#b3de69")
+
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
     ['country', 'country_code', 'geometry', 'technology', 'unit', 'year', 'percentage']
@@ -223,7 +239,7 @@ year_slider.on_change('value', create_data)
 
 map_all = build_map(map_source)
 
-curdoc().add_root(row(year_slider, map_all))
+curdoc().add_root(row(year_slider, map_all, cont_bar))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
