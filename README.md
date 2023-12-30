@@ -6,5 +6,7 @@
 
 **Python version**: 3.9.12
 
+![Image](world_map.png)
+
 # Research
 

@@ -93,9 +93,9 @@ def findcountry(country_name):
         return country_name
 
 # Load data
-df = pd.read_csv(r'data/RESHARE_20231208-072420.csv', encoding_errors='replace', header=2)
+df = pd.read_csv(r'data/REGEN_%_RAW.csv', encoding_errors='replace', header=2)
 
-ren_df = pd.read_csv(r'data/REGEN_20231208-161335.csv', encoding_errors='replace', header=1)
+ren_df = pd.read_csv(r'data/REGEN_GWh_RAW.csv', encoding_errors='replace', header=1)
 
 gen_df = df.query('Indicator=="RE share of electricity generation (%)"')
 
