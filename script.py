@@ -237,17 +237,6 @@ gen_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
 bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
 
-#cont_bar = figure(plot_width=379, plot_height=500, title="Renewable energy by Continents",
-#        y_range=bar_sc.data['country'], y_axis_label='Continents', x_axis_location=None,
-#        tooltips=[
-#            ('Continent', "@country"),
-#            ('Energy', "@percentage")
-#            ])
-
-#cont_bar.xgrid.grid_line_color = None
-
-#cont_bar.hbar(y="country", left="percentage", source=bar_sc.data, right=0, height=0.5, fill_color="#b3de69")
-
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
     ['country', 'country_code', 'geometry', 'technology', 'unit', 'year', 'percentage']
@@ -260,7 +249,6 @@ map_data = json.dumps(df_json)
 map_source = GeoJSONDataSource(geojson=map_data)
 
 year_slider.on_change('value', create_data)
-#year_slider.on_change('value', select_continent)
 
 map_all = build_map(map_source)
 
