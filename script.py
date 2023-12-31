@@ -151,6 +151,8 @@ gen_df['technology'] = gen_df['technology'].copy().apply(lambda x: x.lower())
 
 en_df = pd.concat([ren_df, gen_df])
 
+# Feature Engineer
+
 country_out = {
     'turkiye': 'republic of turkey',
     'reunion': 'reunion',
@@ -248,6 +250,7 @@ map_source = GeoJSONDataSource(geojson=map_data)
 
 year_slider.on_change('value', create_data)
 
+# Update chart
 map_all = build_map(map_source)
 
 cont_bar = bar_cont(bar_sc)
