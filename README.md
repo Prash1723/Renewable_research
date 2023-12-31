@@ -12,6 +12,12 @@ The map explores the total capacity and generation of renewable energy by each c
 
 # Research
 
+At present the world generates about 25% energy through renewable sources. When considering the generation of energy by continents South America has been able to successfully replace fossil fuels by 69% and is the only continent to have above 50% production. Some of the countries that have shown exceptional developments in Renewable Energy Generation are as follows:
+
+**China** -
+
+Although the contribution of renewable energy generated is only 25% of the total generated energy, the amount they produce is the highest of all. Producing upto 1 lakh+ Gigawatt-hour annually, China is the top in the list.
+
 **Brazil** -
 
 Brazil's renewable energy generation story is characterized by a diverse mix of sources, with a historical emphasis on hydropower. The country has large-scale hydropower projects like the Itaipu Dam, a global leader in bioethanol production, a growing wind energy sector along its coastline, and an expanding solar power industry. Government policies, incentives, and auctions have stimulated renewable energy development, aligning with Brazil's goals of energy independence and security. Challenges include environmental considerations and the need for sustainable practices. Brazil's commitment to sustainability and ongoing efforts in research and development position it as a significant player in the global shift toward cleaner and more resilient energy systems.
@@ -23,3 +29,4 @@ The Government of Ethiopia (GOE) has focused on the construction and expansion o
 Ethiopia's journey in renewable energy production stands as a beacon of inspiration for nations seeking to balance energy needs with environmental stewardship. By harnessing the power of its abundant water resources and embracing the wind that sweeps across its highlands, Ethiopia has not 
 only transformed its energy landscape but has also paved the way for a brighter and more sustainable future. As the nation continues to navigate the challenges of the evolving energy sector, Ethiopia serves as a testament to the transformative potential of renewable energy in driving inclusive development and fostering environmental resilience.
 
+**Canada**
