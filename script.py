@@ -34,6 +34,7 @@ def create_data(attr, old, new):
     # Mask data to the required year value
     chosen_year = year_slider.value
     df1 = geo_df1[geo_df1['year']==str(chosen_year)].copy()
+    df2 = gen_df1.query('country.isin(@continents)')[gen_df1['year']==str(chosen_year)].copy()
 
     # Read data to json
     df_json = json.loads(df1[['country', 'country_code', 'geometry', 'technology', 'unit', 'year', 'percentage']].to_json())
@@ -42,14 +43,6 @@ def create_data(attr, old, new):
 
     # Assign Source
     map_source.geojson = map_data
-
-def select_continent(attr, old, new):
-    """Change the annual statistics for the bar chart"""
-
-    # Mask data to the required year value
-    chosen_year = year_slider.value
-    df2 = gen_df1.query('country.isin(@continents)')[gen_df1['year']==str(chosen_year)].copy()
-
     bar_sc.data = df2
 
 def build_map(src):
@@ -266,7 +259,7 @@ map_data = json.dumps(df_json)
 # Assign Source
 map_source = GeoJSONDataSource(geojson=map_data)
 
-year_slider.on_change('value', [create_data, select_continent])
+year_slider.on_change('value', create_data)
 #year_slider.on_change('value', select_continent)
 
 map_all = build_map(map_source)
@@ -277,4 +270,3 @@ curdoc().add_root(row(year_slider, map_all, cont_bar))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
-#rc.log(gen_df.query('country.isin(@continents)').unit.unique())
