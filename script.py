@@ -80,8 +80,6 @@ def build_map(src):
         },
         fill_alpha=0.7, line_color="black", line_width=0.5
     )
-    
-    # map_all.background_fill_color="blue"
 
     map_all.add_layout(color_bar, 'below')
 
