@@ -9,7 +9,7 @@ The map explores the total capacity and generation of renewable energy by each c
 **Python version**: 3.9.12
 
 **Flourish Map**: 
-![Link](https://public.flourish.studio/visualisation/16274813/)
+![Text](https://public.flourish.studio/visualisation/16274813/)
 
 ![Image](world_map.png)
 
