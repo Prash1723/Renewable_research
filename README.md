@@ -30,3 +30,12 @@ Ethiopia's journey in renewable energy production stands as a beacon of inspirat
 only transformed its energy landscape but has also paved the way for a brighter and more sustainable future. As the nation continues to navigate the challenges of the evolving energy sector, Ethiopia serves as a testament to the transformative potential of renewable energy in driving inclusive development and fostering environmental resilience.
 
 **Canada**
+
+In the developed countries categorty, Canada is one of the few and the only one in North America that generates more than 50% renewable energy annually. While the production in Gigawatt-hour is only about 400k
+
+| Source | Generated |
+|--------|-----------|
+| Solar | 30000 |
+| Wind | 400000 |
+| Hydro | 23400 |
+
