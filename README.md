@@ -29,13 +29,21 @@ The Government of Ethiopia (GOE) has focused on the construction and expansion o
 Ethiopia's journey in renewable energy production stands as a beacon of inspiration for nations seeking to balance energy needs with environmental stewardship. By harnessing the power of its abundant water resources and embracing the wind that sweeps across its highlands, Ethiopia has not 
 only transformed its energy landscape but has also paved the way for a brighter and more sustainable future. As the nation continues to navigate the challenges of the evolving energy sector, Ethiopia serves as a testament to the transformative potential of renewable energy in driving inclusive development and fostering environmental resilience.
 
+| Source | Generated | Percentage |
+|--------|-----------|------------|
+| Total | 15817.32 | 100 |
+| Solar | 33.89 | 0.21 |
+| Wind | 817.20 | 5.17 |
+| Hydro | 14942.83 | 94.47 |
+
 **Canada**
 
 In the developed countries categorty, Canada is one of the few and the only one in North America that generates more than 50% renewable energy annually. While the production in Gigawatt-hour is only about 400k
 
-| Source | Generated |
-|--------|-----------|
-| Solar | 30000 |
-| Wind | 400000 |
-| Hydro | 23400 |
+| Source | Generated | Percentage |
+|--------|-----------|------------|
+| Total | 433680 | 100 |
+| Solar | 6043 | 1.39 |
+| Wind | 34753 | 8.01 |
+| Hydro | 382867 | 88.26 |
 
