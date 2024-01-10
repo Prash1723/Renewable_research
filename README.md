@@ -16,7 +16,11 @@ At present the world generates about 25% energy through renewable sources. When 
 
 **China** -
 
-Although the contribution of renewable energy generated is only 25% of the total generated energy, the amount they produce is the highest of all. Producing upto 1 lakh+ Gigawatt-hour annually, China is the top in the list.
+Although the contribution of renewable energy generated is only 25% of the total generated energy, the amount they produce is the highest of all. Producing upto 20 lakh+ Gigawatt-hour annually, China is the top in the list. To achieve greater success, the organization
+
+**India** -
+
+India's growing economy has been the talk of the century and the power it generates to run its industry is substantial. The amount of renewable energy now it generates is only 18% of the total energy 
 
 **Brazil** -
 
