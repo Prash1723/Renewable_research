@@ -63,4 +63,4 @@ The oil rich region has been the lowest producer of renewable energy in the worl
 
 **South America**
 
-This region is concious of the means of energy generation and 
+This region is concious of the means of energy generation, considering they produce about 70% energy through renewable means. Brazil is the largest energy generator in the region and has utilized its resources to its maximum. 
