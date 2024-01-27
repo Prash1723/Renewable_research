@@ -45,6 +45,11 @@ def create_data(attr, old, new):
     map_source.geojson = map_data
     bar_sc.data = df2
 
+def up_scat(attr, old, new):
+    """Select country name"""
+    name = country_sel.value
+    tm_source.data = d1.query('country=="'+name+'"')
+
 def build_map(src):
     """Build map data"""
 
@@ -98,9 +103,33 @@ def bar_cont(src):
 
     cont_bar.xgrid.grid_line_color = None
 
-    cont_bar.hbar(y="country", left="percentage", source=bar_sc.data, right=0, height=0.5, fill_color="#b3de69")
+    cont_bar.hbar(
+        y="country", left="percentage", source=bar_sc.data,
+        right=0, height=0.5,
+        fill_color="#b3de69"
+    )
 
     return cont_bar
+
+def chart_time(src):
+    """Create time series chart for countries"""
+    # Source
+    tm_source = src
+
+    # Map
+    TOOLS = "pan,wheel_zoom,reset,hover,save"
+
+    time_chart = figure(plot_width=725, plot_height=500,
+                    title="Time series data for countries",
+                    tools=TOOLS
+                )
+
+    time_chart.line(
+        "year", "energy", source=time_source,
+        line_color="black", line_width=0.5
+    )
+
+    return time_chart
 
 def findcountry(country_name):
     """Find the official country name"""
@@ -237,6 +266,8 @@ gen_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
 bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
 
+time_sc = ColumnDataSource(gen_df1.query('country.notin(@continents)'))
+
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
     ['country', 'country_code', 'geometry', 'technology', 'unit', 'year', 'percentage']
@@ -254,6 +285,8 @@ year_slider.on_change('value', create_data)
 map_all = build_map(map_source)
 
 cont_bar = bar_cont(bar_sc)
+
+count_line = time_chart(time_sc)
 
 curdoc().add_root(row(year_slider, map_all, cont_bar))
 curdoc().title = 'Renewable energy generation in % map'
