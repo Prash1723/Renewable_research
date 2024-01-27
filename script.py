@@ -125,7 +125,7 @@ def chart_time(src):
                 )
 
     time_chart.line(
-        "year", "energy", source=time_source,
+        "year", "percentage", source=tm_source,
         line_color="black", line_width=0.5
     )
 
@@ -232,6 +232,9 @@ year_slider = Slider(
     width=110
 )
 
+# Select the required country
+country_sel = Select(title="Select Country", value="Africa", options=list(gen_df.country.unique()))
+
 # Assign official names to data
 gen_df['country'] = gen_df['country'].apply(findcountry)
 
@@ -266,7 +269,7 @@ gen_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
 bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
 
-time_sc = ColumnDataSource(gen_df1.query('country.notin(@continents)'))
+time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents)'))
 
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
@@ -281,14 +284,16 @@ map_source = GeoJSONDataSource(geojson=map_data)
 
 year_slider.on_change('value', create_data)
 
+up_scat.on_change('value', country_sel)
+
 # Update chart
 map_all = build_map(map_source)
 
 cont_bar = bar_cont(bar_sc)
 
-count_line = time_chart(time_sc)
+count_line = chart_time(time_sc)
 
-curdoc().add_root(row(year_slider, map_all, cont_bar))
+curdoc().add_root(column(row(year_slider, map_all, cont_bar), row(country_sel, count_line)))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
