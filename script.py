@@ -51,6 +51,11 @@ def up_scat(attr, old, new):
     time_sc.data = gen_df1[~gen_df1['country'].isin(continents)].query('country=="'+name+'"')
     ren_sc.data = ren_df1[~ren_df1['country'].isin(continents)].query('country=="'+name+'"')
 
+def te_scal(attr, old, new):
+    """Select country name"""
+    tech_val = tech_sel.value
+    ren_sc.data = ren_df1[~ren_df1['country'].isin(continents)].query('technology=="'+tech_val+'"')
+
 def build_map(src):
     """Build map data"""
 
@@ -143,30 +148,32 @@ def chart_time(src):
 def chart_energy(src):
     """Create time series chart for countries"""
     # Source
-    time_sc = src
+    ren_sc = src
 
     # Map
     TOOLS = "pan,wheel_zoom,reset,hover,save"
 
-    time_chart = figure(plot_width=375, plot_height=300,
-                    title="Time series data for countries",
+    ren_chart = figure(plot_width=375, plot_height=300,
+                    title="Energy data for country",
                     tools=TOOLS, tooltips=[
                     ('country', '@country'), 
                     ('Energy', '@percentage GWh')
                     ]
                 )
 
-    time_chart.line(
-        "year", "percentage", source=time_sc,
+    ren_chart.multi_line(
+        "year", "percentage", source=ren_sc, legend_field="technology", 
         line_color="red", line_width=5
     )
 
-    time_chart.circle(
-        x="year", y="percentage", size=10, source=time_sc, 
+    ren_chart.circle(
+        x="year", y="percentage", size=10, source=ren_sc,
         fill_color="red", fill_alpha=0.7
     )
 
-    return time_chart
+    ren_chart.legend.visible = False
+
+    return ren_chart
 
 def findcountry(country_name):
     """Find the official country name"""
@@ -219,7 +226,7 @@ gen_df['technology'] = gen_df['technology'].copy().apply(lambda x: x.lower())
 
 country_out = {
     'turkiye': 'republic of turkey',
-    'reunion': 'reunion',
+    'reunion': 'reunion', 
     'kingdom of somaliland': 'somaliland',
     'Commonwealth of the Bahamas': 'the bahamas',
     'falkland islands (malvinas)': 'falkland islands',
@@ -278,6 +285,10 @@ geo_df = gdf.merge(gen_df, left_on='country', right_on='country', how='left')
 
 geo_df.country = geo_df.country.apply(lambda x: x.capitalize())
 
+gen_df.country = gen_df.country.apply(lambda x: x.capitalize())
+
+ren_df.country = ren_df.country.apply(lambda x: x.capitalize())
+
 # Fill Null values
 geo_df.fillna(0, inplace=True)
 
@@ -332,7 +343,44 @@ year_slider = Slider(
 country_sel = Select(
     title="Select Country",
     value="Afghanistan", 
-    options=list(gen_df1[~gen_df1['country'].isin(continents)].country.unique()),
+    options=list(set(list(gen_df['country'].unique()))-set(['World', 
+                                          'Africa', 
+                                          'Asia', 
+                                          'Middle east', 
+                                          'Europe', 
+                                          'European union',
+                                          'North america',
+                                          'South america', 
+                                          'Central america and the caribbean', 
+                                          'Oceania'])),
+    width=110
+)
+
+# Select the renewable tech
+tech_sel = Select(
+    title="Select Type",
+    value="total renewable energy",
+    options=[
+    'total renewable energy',
+    'hydropower',
+    'renewable hydropower',
+    'pumped storage',
+    'marine',
+    'wind',
+    'onshore wind energy',
+    'offshore wind energy',
+    'solar',
+    'solar photovoltaic',
+    'concentrated solar power',
+    'bioenergy',
+    'solid biofuels and renewable municipal waste',
+    'renewable municipal waste',
+    'bagasse',
+    'other solid biofuels',
+    'liquid biofuels',
+    'biogas',
+    'geothermal'
+    ],
     width=110
 )
 
@@ -343,6 +391,8 @@ year_slider.on_change('value', create_data)
 
 country_sel.on_change('value', up_scat)
 
+tech_sel.on_change('value', te_scal)
+
 # Update chart
 map_all = build_map(map_source)
 
@@ -352,7 +402,7 @@ count_line = chart_time(time_sc)
 
 ren_line = chart_energy(ren_sc)
 
-curdoc().add_root(column(row(column(year_slider, country_sel), map_all, cont_bar), row(count_line, ren_line)))
+curdoc().add_root(column(row(column(year_slider, country_sel, tech_sel), map_all, cont_bar), row(count_line, ren_line)))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
