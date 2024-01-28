@@ -48,7 +48,7 @@ def create_data(attr, old, new):
 def up_scat(attr, old, new):
     """Select country name"""
     name = country_sel.value
-    tm_source.data = d1.query('country=="'+name+'"')
+    time_sc.data = gen_df1[~gen_df1['country'].isin(continents)].query('country=="'+name+'"')
 
 def build_map(src):
     """Build map data"""
@@ -114,19 +114,27 @@ def bar_cont(src):
 def chart_time(src):
     """Create time series chart for countries"""
     # Source
-    tm_source = src
+    time_sc = src
 
     # Map
     TOOLS = "pan,wheel_zoom,reset,hover,save"
 
-    time_chart = figure(plot_width=725, plot_height=500,
+    time_chart = figure(plot_width=375, plot_height=500,
                     title="Time series data for countries",
-                    tools=TOOLS
+                    tools=TOOLS, tooltips=[
+                    ('country', '@country'), 
+                    ('Energy', '@percentage %')
+                    ]
                 )
 
     time_chart.line(
-        "year", "percentage", source=tm_source,
-        line_color="black", line_width=0.5
+        "year", "percentage", source=time_sc,
+        line_color="green", line_width=2
+    )
+
+    time_chart.circle(
+        x="year", y="percentage", size=10, source=time_sc, 
+        fill_color="green", fill_alpha=0.7
     )
 
     return time_chart
@@ -222,19 +230,6 @@ gdf['country'] = gdf['country'].apply(lambda x: x.lower())
 
 gen_df['country'] = gen_df['country'].apply(lambda x: x.lower())
 
-# Range slider for the year
-year_slider = Slider(
-    start=2018,
-    end=2021,
-    value=2018, 
-    step=1,
-    title='year',
-    width=110
-)
-
-# Select the required country
-country_sel = Select(title="Select Country", value="Africa", options=list(gen_df.country.unique()))
-
 # Assign official names to data
 gen_df['country'] = gen_df['country'].apply(findcountry)
 
@@ -269,7 +264,7 @@ gen_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
 bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
 
-time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents)'))
+time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents) and unit=="total_perc"'))
 
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
@@ -279,12 +274,30 @@ df_json = json.loads(geo_df1.query('year=="2018"')[
 # Convert to string like object
 map_data = json.dumps(df_json)
 
+## App Design
+# Range slider for the year
+year_slider = Slider(
+    start=2018,
+    end=2021,
+    value=2018, 
+    step=1,
+    title='year',
+    width=110
+)
+
+# Select the required country
+country_sel = Select(
+    title="Select Country",
+    value="Afghanistan", 
+    options=list(gen_df1[~gen_df1['country'].isin(continents)].country.unique())
+)
+
 # Assign Source
 map_source = GeoJSONDataSource(geojson=map_data)
 
 year_slider.on_change('value', create_data)
 
-up_scat.on_change('value', country_sel)
+country_sel.on_change('value', up_scat)
 
 # Update chart
 map_all = build_map(map_source)
