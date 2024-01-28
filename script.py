@@ -49,6 +49,7 @@ def up_scat(attr, old, new):
     """Select country name"""
     name = country_sel.value
     time_sc.data = gen_df1[~gen_df1['country'].isin(continents)].query('country=="'+name+'"')
+    ren_sc.data = ren_df1[~ren_df1['country'].isin(continents)].query('country=="'+name+'"')
 
 def build_map(src):
     """Build map data"""
@@ -119,7 +120,7 @@ def chart_time(src):
     # Map
     TOOLS = "pan,wheel_zoom,reset,hover,save"
 
-    time_chart = figure(plot_width=375, plot_height=500,
+    time_chart = figure(plot_width=375, plot_height=300,
                     title="Time series data for countries",
                     tools=TOOLS, tooltips=[
                     ('country', '@country'), 
@@ -129,12 +130,40 @@ def chart_time(src):
 
     time_chart.line(
         "year", "percentage", source=time_sc,
-        line_color="green", line_width=2
+        line_color="green", line_width=5
     )
 
     time_chart.circle(
         x="year", y="percentage", size=10, source=time_sc, 
         fill_color="green", fill_alpha=0.7
+    )
+
+    return time_chart
+
+def chart_energy(src):
+    """Create time series chart for countries"""
+    # Source
+    time_sc = src
+
+    # Map
+    TOOLS = "pan,wheel_zoom,reset,hover,save"
+
+    time_chart = figure(plot_width=375, plot_height=300,
+                    title="Time series data for countries",
+                    tools=TOOLS, tooltips=[
+                    ('country', '@country'), 
+                    ('Energy', '@percentage GWh')
+                    ]
+                )
+
+    time_chart.line(
+        "year", "percentage", source=time_sc,
+        line_color="red", line_width=5
+    )
+
+    time_chart.circle(
+        x="year", y="percentage", size=10, source=time_sc, 
+        fill_color="red", fill_alpha=0.7
     )
 
     return time_chart
@@ -186,8 +215,6 @@ gen_df.columns = [
 gen_df['country'] = gen_df['country'].copy().apply(lambda x: x.lower())
 gen_df['technology'] = gen_df['technology'].copy().apply(lambda x: x.lower())
 
-en_df = pd.concat([ren_df, gen_df])
-
 # Feature Engineer
 
 country_out = {
@@ -230,13 +257,21 @@ gdf['country'] = gdf['country'].apply(lambda x: x.lower())
 
 gen_df['country'] = gen_df['country'].apply(lambda x: x.lower())
 
+ren_df['country'] = ren_df['country'].apply(lambda x: x.lower())
+
 # Assign official names to data
 gen_df['country'] = gen_df['country'].apply(findcountry)
+
+ren_df['country'] = ren_df['country'].apply(findcountry)
 
 gdf['country'] = gdf['country'].apply(findcountry)
 
 # Correct names in dataframe for matching it with map data
 gen_df.country = gen_df.country.apply(lambda x: country_out.get(x, x))
+
+ren_df.country = ren_df.country.apply(lambda x: country_out.get(x, x))
+
+en_df = pd.concat([ren_df, gen_df])
 
 # Merge data with co-ordinates
 geo_df = gdf.merge(gen_df, left_on='country', right_on='country', how='left')
@@ -262,9 +297,17 @@ gen_df1 = pd.melt(gen_df, id_vars=['country', 'technology', 'unit'],
 
 gen_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
+# Energy data
+ren_df1 = pd.melt(ren_df, id_vars=['country', 'technology', 'unit'],
+        value_vars=['2018', '2019', '2020', '2021'])
+
+ren_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
+
 bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
 
 time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents) and unit=="total_perc"'))
+
+ren_sc = ColumnDataSource(ren_df1.query('~country.isin(@continents) and unit!="total_perc"'))
 
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
@@ -289,7 +332,8 @@ year_slider = Slider(
 country_sel = Select(
     title="Select Country",
     value="Afghanistan", 
-    options=list(gen_df1[~gen_df1['country'].isin(continents)].country.unique())
+    options=list(gen_df1[~gen_df1['country'].isin(continents)].country.unique()),
+    width=110
 )
 
 # Assign Source
@@ -306,7 +350,9 @@ cont_bar = bar_cont(bar_sc)
 
 count_line = chart_time(time_sc)
 
-curdoc().add_root(column(row(year_slider, map_all, cont_bar), row(country_sel, count_line)))
+ren_line = chart_energy(ren_sc)
+
+curdoc().add_root(column(row(column(year_slider, country_sel), map_all, cont_bar), row(count_line, ren_line)))
 curdoc().title = 'Renewable energy generation in % map'
 
 rc.log("Map created", style='yellow')
