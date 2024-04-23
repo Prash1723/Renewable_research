@@ -48,13 +48,17 @@ def create_data(attr, old, new):
 def up_scat(attr, old, new):
     """Select country name"""
     name = country_sel.value
-    time_sc.data = gen_df1[~gen_df1['country'].isin(continents)].query('country=="'+name+'"')
-    ren_sc.data = ren_df1[~ren_df1['country'].isin(continents)].query('country=="'+name+'"')
+    df3 = gen_df1[~gen_df1['country'].isin(continents)].query('country=="'+name+'"')
+    df4 = ren_df1[~ren_df1['country'].isin(continents)].query('country=="'+name+'"')
+
+    time_sc.data = df3
+    ren_sc.data = df4
 
 def te_scal(attr, old, new):
     """Select country name"""
     tech_val = tech_sel.value
-    ren_sc.data = ren_df1[~ren_df1['country'].isin(continents)].query('technology=="'+tech_val+'"')
+    df5 = ren_df1[~ren_df1['country'].isin(continents)].query('technology=="'+tech_val+'"')
+    ren_sc.data = df5
 
 def build_map(src):
     """Build map data"""
@@ -156,13 +160,13 @@ def chart_energy(src):
     ren_chart = figure(plot_width=375, plot_height=300,
                     title="Energy data for country",
                     tools=TOOLS, tooltips=[
-                    ('country', '@country'), 
+                    ('Country', '@country'), 
                     ('Energy', '@percentage GWh')
                     ]
                 )
 
-    ren_chart.multi_line(
-        "year", "percentage", source=ren_sc, legend_field="technology", 
+    ren_chart.line(
+        "year", "percentage", source=ren_sc,
         line_color="red", line_width=5
     )
 
@@ -314,12 +318,6 @@ ren_df1 = pd.melt(ren_df, id_vars=['country', 'technology', 'unit'],
 
 ren_df1.columns = ['country', 'technology', 'unit', 'year', 'percentage']
 
-bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
-
-time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents) and unit=="total_perc"'))
-
-ren_sc = ColumnDataSource(ren_df1.query('~country.isin(@continents) and unit!="total_perc"'))
-
 # Read data to json
 df_json = json.loads(geo_df1.query('year=="2018"')[
     ['country', 'country_code', 'geometry', 'technology', 'unit', 'year', 'percentage']
@@ -339,11 +337,7 @@ year_slider = Slider(
     width=110
 )
 
-# Select the required country
-country_sel = Select(
-    title="Select Country",
-    value="Afghanistan", 
-    options=list(set(list(gen_df['country'].unique()))-set(['World', 
+country_list = list(set(list(gen_df['country'].unique()))-set(['World', 
                                           'Africa', 
                                           'Asia', 
                                           'Middle east', 
@@ -352,7 +346,13 @@ country_sel = Select(
                                           'North america',
                                           'South america', 
                                           'Central america and the caribbean', 
-                                          'Oceania'])),
+                                          'Oceania'])).sort()
+
+# Select the required country
+country_sel = Select(
+    title="Select Country",
+    value="Afghanistan", 
+    options=country_list,
     width=110
 )
 
@@ -386,6 +386,12 @@ tech_sel = Select(
 
 # Assign Source
 map_source = GeoJSONDataSource(geojson=map_data)
+
+bar_sc = ColumnDataSource(gen_df1.query('country.isin(@continents) and year=="2018"'))
+
+time_sc = ColumnDataSource(gen_df1.query('~country.isin(@continents) and unit=="total_perc"'))
+
+ren_sc = ColumnDataSource(ren_df1.query('~country.isin(@continents) and country=="Afghanistan"'))
 
 year_slider.on_change('value', create_data)
 
