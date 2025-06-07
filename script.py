@@ -3,12 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
-from bokeh.plotting import figure, output_file, show, curdoc
+from bokeh.plotting import figure, curdoc
 from bokeh.models import ColumnDataSource, Legend, GeoJSONDataSource, LinearColorMapper, ColorBar, Range1d
 from bokeh.models import NumeralTickFormatter, HoverTool, LabelSet, Panel, Tabs, Slider, CustomJS, TapTool, CDSView
 from bokeh.models.widgets import TableColumn, DataTable, NumberFormatter, Dropdown, Select, RadioButtonGroup, TableColumn
 from bokeh.palettes import Category20c
-from bokeh.io import curdoc, output_notebook, show, output_file
 from bokeh.layouts import row, column, gridplot
 from bokeh.palettes import Viridis6 as palette
 from bokeh.transform import cumsum
