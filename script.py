@@ -21,10 +21,6 @@ import json
 import warnings
 warnings.filterwarnings('ignore')
 
-from rich.console import Console
-
-rc = Console()
-
 # - Functions
 
 def create_data(attr, old, new):
