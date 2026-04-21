@@ -405,5 +405,3 @@ ren_line = chart_energy(ren_sc)
 
 curdoc().add_root(column(row(column(year_slider, country_sel, tech_sel), map_all, cont_bar), row(count_line, ren_line)))
 curdoc().title = 'Renewable energy generation in % map'
-
-rc.log("Map created", style='yellow')
